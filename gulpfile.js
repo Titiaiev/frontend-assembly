@@ -2,13 +2,16 @@
 //внести свои настройки
 //добавить имя(строку, например 'projectname') проекта для тунеля,
 //который будет выглядить так - http://projectmane.localtunnel.me
-var projectname;
+var projectname = '';
 
 //настройки ftp
 var hostname = 'example.com',//домен проекта, например example.com
-    username = 'login',//логин, напрмер admin
-    userpassword = 'password',//пароль, напрмер password
-    webpath = 'public_html';//удалённая папка, напрмер public_html
+    username = 'login',//логин, например admin
+    userpassword = 'password',//пароль, например password
+    webpath = 'public_html';//удалённая папка, например public_html
+
+var sourceFolder = 'src',//указать папку с исходниками
+    resultFolder = 'dest';//папка с результатом (будет создана)
 
 var gulp = require('gulp'),
     watch = require('gulp-watch'),
@@ -27,34 +30,34 @@ var gulp = require('gulp'),
 
 var path = {
     build: {
-        html: 'build/',
-        js: 'build/js/',
-        css: 'build/css/',
-        img: 'build/img/',
-        fonts: 'build/fonts/'
+        html: resultFolder + '/',
+        js: resultFolder + '/js/',
+        css: resultFolder + '/css/',
+        img: resultFolder + '/img/',
+        fonts: resultFolder + '/fonts/'
     },
     src: {
-        html: 'src/*.html',
-        js: 'src/js/main.js',
-        style: 'src/style/main.scss',
-        img: 'src/img/**/*.*',
-        fonts: 'src/fonts/**/*.*'
+        html: sourceFolder + '/*.html',
+        js: sourceFolder + '/js/main.js',
+        style: sourceFolder + '/style/main.scss',
+        img: sourceFolder + '/img/**/*.*',
+        fonts: sourceFolder + '/fonts/**/*.*'
     },
     watch: {
-        html: 'src/**/*.html',
-        js: 'src/js/**/*.js',
-        style: 'src/style/**/*.scss',
-        img: 'src/img/**/*.*',
-        fonts: 'src/fonts/**/*.*'
+        html: sourceFolder + '/**/*.html',
+        js: sourceFolder + '/js/**/*.js',
+        style: sourceFolder + '/style/**/*.scss',
+        img: sourceFolder + '/img/**/*.*',
+        fonts: sourceFolder + '/fonts/**/*.*'
     },
-    clean: './build'
+    clean: './'+resultFolder
 };
 
 var config = {
     server: {
-        baseDir: "./build"
+        baseDir: "./" + resultFolder
     },
-    tunnel: projectmname || true,//Demonstration page: http://projectmane.localtunnel.me
+    tunnel: projectname || true,//Demonstration page: http://projectmane.localtunnel.me
     host: 'localhost',
     port: 9000,
     logPrefix: "Frontend_Assembly"
@@ -89,7 +92,7 @@ gulp.task('style:build', function () {
     gulp.src(path.src.style) 
         .pipe(sourcemaps.init())
         .pipe(sass({
-            includePaths: ['src/style/'],
+            includePaths: [sourceFolder + '/style/'],
             outputStyle: 'compressed',
             sourceMap: true,
             errLogToConsole: true
@@ -158,8 +161,8 @@ gulp.task('deploy', function() {
 	});
 
 	var globs = [
-	'build/**',
-	'build/.htaccess',
+	resultFolder + '/**',
+	resultFolder + '/.htaccess',
 	];
 	return gulp.src(globs, {buffer: false})
 	.pipe(conn.newer(webpath))
