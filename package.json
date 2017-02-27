@@ -1,6 +1,6 @@
 {
   "name": "frontend-assembly",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "description": "Boilerplate for html+js+css apps",
   "repository": {
     "type": "git",
@@ -21,5 +21,13 @@
     "rimraf": "^2.3.1",
     "gulp-less": "^3.3.0",
     "vinyl-ftp": "^0.6.0"
+  },
+  "devDependencies": {
+    "gulp-bump": "^2.7.0",
+    "gulp-csscomb": "^3.0.8",
+    "gulp-filesize": "0.0.6",
+    "gulp-htmlhint": "^0.3.1",
+    "gulp-pug": "^3.2.0",
+    "gulp-zip": "^4.0.0"
   }
 }
